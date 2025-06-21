@@ -83,15 +83,20 @@ public class WordleGame {
     private static Set<String> loadDictionary(String filename) {
         Set<String> words = new HashSet<>();
         try (Scanner sc = new Scanner(new java.io.File(filename))) {
-            while (sc.hasNext()) {
+            while (sc.hasNextLine()) {
                 String word = sc.nextLine().trim().toLowerCase();
-                if (word.length() == WORD_LENGTH) {
+                if (word.length() == 5) {
                     words.add(word);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Failed to load dictionary.");
+            System.out.println("Failed to load dictionary: " + e.getMessage());
         }
+
+        if (words.isEmpty()) {
+            throw new IllegalStateException("Dictionary is empty or missing valid words.");
+        }
+
         return words;
     }
 }
